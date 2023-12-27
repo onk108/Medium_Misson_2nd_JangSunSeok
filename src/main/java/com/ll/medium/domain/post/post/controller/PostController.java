@@ -31,6 +31,12 @@ public class PostController {
         return "domain/post/post/detail";
     }
 
+    @GetMapping("/write/{id}")
+    public String write(@PathVariable long id) {
+
+        return "domain/post/post/write";
+    }
+
     @GetMapping("/list")
     public String showList(
             @RequestParam(defaultValue = "") String kw,
