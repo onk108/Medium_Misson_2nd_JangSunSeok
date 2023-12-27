@@ -19,6 +19,18 @@
         </li>
     </ul>
 
+    <h1>유료글 목록</h1>
+
+    <ul>
+        <li th:each="post : ${postPage.content}">
+            <a th:href="|/post/paid/${post.id}|">
+                <span th:text="${post.id}"></span>
+                /
+                <span th:text="${post.title}"></span>
+            </a>
+        </li>
+    </ul>
+
     <th:block th:with="queryStrBase = ${@rq.getCurrentQueryStringWithoutParam('page')}">
         <th:block th:replace="global/fragments/pagination :: pagination(${postPage}, ${queryStrBase}, 1)">
 

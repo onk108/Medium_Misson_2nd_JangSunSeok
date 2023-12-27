@@ -32,8 +32,6 @@ public class NotProd {
 
             postService.write(memberUser1, "제목 1", "내용 1", true);
             postService.write(memberUser1, "제목 2", "내용 2", true);
-            postService.write(memberUser1, "제목 3", "내용 3", false);
-            postService.write(memberUser1, "제목 4", "내용 4", true);
 
             postService.write(memberUser2, "제목 5", "내용 5", true);
             postService.write(memberUser2, "제목 6", "내용 6", false);
