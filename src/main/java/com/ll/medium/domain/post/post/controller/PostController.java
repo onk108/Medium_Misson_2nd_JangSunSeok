@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class PostController {
     private final PostService postService;
     private final Rq rq;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public String showDetail(@PathVariable long id) {
         rq.setAttribute("post", postService.findById(id).get());
@@ -31,10 +33,10 @@ public class PostController {
         return "domain/post/post/detail";
     }
 
-    @GetMapping("/write/{id}")
-    public String write(@PathVariable long id) {
+    @GetMapping("/paid/write")
+    public String write() {
 
-        return "domain/post/post/write";
+        return "domain/post/post/paidwrite";
     }
 
     @GetMapping("/list")
