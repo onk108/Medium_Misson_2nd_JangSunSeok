@@ -85,6 +85,13 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/paid/write")
     public String write() {
+        if(!rq.isLogin()) {
+            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+        }
+
+        if(!rq.isPaid()) {
+            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+        }
 
         return "domain/post/post/paidwrite";
     }
