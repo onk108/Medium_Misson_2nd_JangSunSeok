@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Optional;
 
 @Component
@@ -82,6 +84,16 @@ public class Rq {
                 .anyMatch(it -> it.getAuthority().equals("ROLE_ADMIN"));
     }
 
+    public boolean isPaid() {
+        Collection<GrantedAuthority> authorities = getUser().getAuthorities();
+        for (GrantedAuthority authority : authorities) {
+            if (authority.getAuthority().equals("ROLE_PAID")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setAttribute(String key, Object value) {
         request.setAttribute(key, value);
     }
@@ -100,10 +112,6 @@ public class Rq {
 
     public boolean isLogined() {
         return user != null;
-    }
-
-    public boolean isPaid() {
-        return member.isPaid();
     }
 
     private String getMemberUsername() {

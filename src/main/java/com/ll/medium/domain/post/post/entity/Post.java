@@ -32,4 +32,10 @@ public class Post {
     private String title;
     private String body;
     private boolean isPublished;
+
 }
+
+/*
+Add Post Object(Entity) premium field(Boolean)
+Inspect Member's authority(ROLE_PAID) and premium status of post
+ */

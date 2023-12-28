@@ -33,12 +33,50 @@ public class PostController {
     @GetMapping("/{id}")
     public String showDetail(@PathVariable long id) {
 
+        //
+        // Post post =  postService.findById(id).get();
+        // Boolean isPre = post.isPremium();
+
+        // if ( isPre == true ) {
+        //  if ( logined == true ) {
+        //   Member member;
+        //   List<GtrantedAuth> auth = member.getAuthorites(); <-
+        //   for ( GtrantedAuth a : auth )
+        //   PAID
+        // }
+        //  else {
+        //   redirect ->
+        // }
+        // }
+        // else { <-
+
+        // find post
+        // is premium -> ture
+        // ture ->
+            // login ->
+                // true ->
+                    // member auth
+                        // is -> PAID
+                            // show page
+                        // is not PAID
+                            // error -> this post is premium post.
+                // false -> redirect -> login
+            // false
+                // show-page
         rq.setAttribute("post", postService.findById(id).get());
         return "domain/post/post/detail";
     }
 
     @GetMapping("/paid/{id}")
     public String payShowDetail(@PathVariable long id) {
+        if(!rq.isLogin()) {
+            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+        }
+
+        if(!rq.isPaid()) {
+            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+        }
+
         rq.setAttribute("post", postService.findById(id).get());
 
         return "domain/post/post/paiddetail";

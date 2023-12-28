@@ -33,8 +33,6 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/adm/**")
                                 .hasRole("ADMIN")
-                                .requestMatchers("/post/paid/**")
-                                .hasRole("PAID")
                                 .anyRequest()
                                 .permitAll()
                 )

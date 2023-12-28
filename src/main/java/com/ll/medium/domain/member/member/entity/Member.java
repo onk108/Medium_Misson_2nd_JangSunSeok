@@ -33,7 +33,7 @@ public class Member {
     private LocalDateTime modifyDate;
     private String username;
     private String password;
-    private boolean isPaid;
+    private Boolean isPaid;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
