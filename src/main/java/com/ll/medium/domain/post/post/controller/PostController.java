@@ -33,6 +33,9 @@ public class PostController {
     @GetMapping("/{id}")
     public String showDetail(@PathVariable long id) {
 
+        if(!rq.isLogin()) {
+            return rq.redirect("/member/login", "회원가입과 로그인을 부탁드립니다.");
+        }
         //
         // Post post =  postService.findById(id).get();
         // Boolean isPre = post.isPremium();
@@ -70,7 +73,7 @@ public class PostController {
     @GetMapping("/paid/{id}")
     public String payShowDetail(@PathVariable long id) {
         if(!rq.isLogin()) {
-            return rq.redirect("/post/list", "유료멤버십 전용입니다.");
+            return rq.redirect("/member/login", "회원가입과 로그인을 부탁드립니다.");
         }
 
         if(!rq.isPaid()) {
@@ -84,9 +87,9 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/paid/write")
-    public String write() {
+    public String payWrite() {
         if(!rq.isLogin()) {
-            return rq.redirect("/post/list", "유료멤버십 전용입니다.");
+            return rq.redirect("/member/login", "회원가입과 로그인을 부탁드립니다.");
         }
 
         if(!rq.isPaid()) {
@@ -94,6 +97,16 @@ public class PostController {
         }
 
         return "domain/post/post/paidwrite";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/write")
+    public String write() {
+        if(!rq.isLogin()) {
+            return rq.redirect("/member/login", "회원가입과 로그인을 부탁드립니다.");
+        }
+
+        return "domain/post/post/write";
     }
 
     @Data
@@ -104,14 +117,30 @@ public class PostController {
         private String body;
     }
 
+    @Data
+    public static class writeForm {
+        @NotBlank
+        private String title;
+        @NotBlank
+        private String body;
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/paid/write")
-    String write(@Valid paidwriteForm paidwriteForm) {
-
+    String payWrite(@Valid paidwriteForm paidwriteForm) {
 
         postService.payWrite(rq.getMember(), paidwriteForm.title, paidwriteForm.body, true);
 
         return rq.redirect("/post/paid/list", "게시물 생성되었습니다.");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/write")
+    String write(@Valid writeForm writeForm) {
+
+        postService.write(rq.getMember(), writeForm.title, writeForm.body, true);
+
+        return rq.redirect("/post/list", "게시물 생성되었습니다.");
     }
 
     @GetMapping("/list")
