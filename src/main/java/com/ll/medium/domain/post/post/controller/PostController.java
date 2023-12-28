@@ -3,13 +3,13 @@ package com.ll.medium.domain.post.post.controller;
 import com.ll.medium.domain.member.member.entity.Member;
 import com.ll.medium.domain.member.member.service.MemberService;
 import com.ll.medium.domain.post.post.entity.Post;
+import com.ll.medium.domain.post.post.entity.payPost;
 import com.ll.medium.domain.post.post.service.PostService;
 import com.ll.medium.global.rq.Rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -70,11 +70,11 @@ public class PostController {
     @GetMapping("/paid/{id}")
     public String payShowDetail(@PathVariable long id) {
         if(!rq.isLogin()) {
-            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+            return rq.redirect("/post/list", "유료멤버십 전용입니다.");
         }
 
         if(!rq.isPaid()) {
-            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+            return rq.redirect("/post/list", "유료멤버십 전용입니다.");
         }
 
         rq.setAttribute("post", postService.findById(id).get());
@@ -86,11 +86,11 @@ public class PostController {
     @GetMapping("/paid/write")
     public String write() {
         if(!rq.isLogin()) {
-            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+            return rq.redirect("/post/list", "유료멤버십 전용입니다.");
         }
 
         if(!rq.isPaid()) {
-            return rq.redirect("/post/list", "이 글은 유료멤버십 전용입니다.");
+            return rq.redirect("/post/list", "유료멤버십 전용입니다.");
         }
 
         return "domain/post/post/paidwrite";
@@ -106,13 +106,12 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/paid/write")
-    @SneakyThrows
     String write(@Valid paidwriteForm paidwriteForm) {
 
 
-        postService.write(rq.getMember(), paidwriteForm.title, paidwriteForm.body, true);
+        postService.payWrite(rq.getMember(), paidwriteForm.title, paidwriteForm.body, true);
 
-        return "domain/post/post/list";
+        return rq.redirect("/post/paid/list", "게시물 생성되었습니다.");
     }
 
     @GetMapping("/list")
@@ -129,5 +128,21 @@ public class PostController {
         rq.setAttribute("page", page);
 
         return "domain/post/post/list";
+    }
+
+    @GetMapping("/paid/list")
+    public String paidShowList(
+            @RequestParam(defaultValue = "") String kw,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("id"));
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by(sorts));
+
+        Page<payPost> postPage = postService.paySearch(kw, pageable);
+        rq.setAttribute("postPage", postPage);
+        rq.setAttribute("page", page);
+
+        return "domain/post/post/paidlist";
     }
 }
