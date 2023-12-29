@@ -12,7 +12,7 @@
     <div class="mt-4">
         <ul>
             <li th:each="post : ${postPage.content}">
-                <a th:href="|/post/${post.id}|">
+                <a th:href="|/post/${post.id}|" class="text-black hover:text-blue-700">
                     <span th:text="${post.id}"></span> /
                     <span th:text="${post.title}"></span>
                 </a>
@@ -25,8 +25,11 @@
                 </th:block>
             </th:block>
         </div>
+    </div>
 
-        <a href="/post/write"
+
+
+    <a href="/post/write"
            class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             <span>글쓰기</span>
         </a>

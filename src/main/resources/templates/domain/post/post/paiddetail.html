@@ -7,23 +7,82 @@
 <body>
 
 <div layout:fragment="content">
-    <h1>글 내용</h1>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-    <div>
-        <h3>제목</h3>
-        <div th:text="${post.title}"></div>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .post-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body {
+            white-space: pre-wrap;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div class="container">
+        <h1>글 내용</h1>
+
+        <div>
+            <h3>제목</h3>
+            <div th:text="${post.title}" class="post-title"></div>
+        </div>
+
+        <div>
+            <h3>내용</h3>
+            <div style="white-space: pre-wrap;" th:text="${post.body}" class="post-body"></div>
+        </div>
+
+        <hr>
+
+        <div>
+            <button onclick="history.back();" class="btn-back">뒤로가기</button>
+        </div>
     </div>
 
-    <div>
-        <h3>내용</h3>
-        <div style="white-space: pre-wrap;" th:text="${post.body}"></div>
-    </div>
-
-    <hr>
-
-    <div>
-        <button onclick="history.back();">뒤로가기</button>
-    </div>
 </div>
 
 </body>
