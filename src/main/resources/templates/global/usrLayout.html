@@ -8,15 +8,16 @@
 <body>
 
 <header layout:fragment="header">
-    <h1 th:text="|${@appConfig.siteName}|"></h1>
+    <h1 th:text="|${@appConfig.siteName}|" class="text-4xl font-bold mb-4"></h1>
 
-    <a href="/">홈</a>
-    <a href="/post/list">글 목록</a>
-    <a href="/post/paid/list">유료글 목록</a>
-    <a th:if="${@rq.admin}" href="/adm">관리자 홈</a>
-    <a th:if="${@rq.logout}" href="/member/login">로그인</a>
-    <a th:if="${@rq.logout}" href="/member/join">회원가입</a>
-    <a th:if="${@rq.login}" href="/member/logout">로그아웃</a>
+
+    <a href="/" class="text-blue-500 hover:underline text-lg">홈</a>
+    <a href="/post/list" class="text-blue-500 hover:underline text-lg">글 목록</a>
+    <a href="/post/paid/list" class="text-blue-500 hover:underline text-lg">유료글 목록</a>
+    <a th:if="${@rq.admin}" href="/adm" class="text-blue-500 hover:underline text-lg">관리자 홈</a>
+    <a th:if="${@rq.logout}" href="/member/login" class="text-blue-500 hover:underline text-lg">로그인</a>
+    <a th:if="${@rq.logout}" href="/member/join" class="text-blue-500 hover:underline text-lg">회원가입</a>
+    <a th:if="${@rq.login}" href="/member/logout" class="text-blue-500 hover:underline text-lg">로그아웃</a>
 </header>
 
 </body>
