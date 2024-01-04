@@ -19,7 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class payPost {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;

@@ -1,0 +1,107 @@
+<html layout:decorate="~{global/usrLayout}">
+
+<div layout:fragment="content" class="p-2">
+
+    <style>
+        .header {
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <h1 class="font-bold mb-2 header"><i class="fa-solid fa-pen"></i>글 작성</h1>
+
+
+    <form class="flex flex-col gap-4" method="POST" th:action onsubmit="submitWriteForm(this); return false;">
+        <style>
+            .form-control {
+                margin-bottom: 1rem;
+            }
+
+            .label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+
+            .label-text {
+                display: inline-block;
+                margin-bottom: 0.5rem;
+            }
+
+            .input {
+                padding: 0.5rem;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                width: 100%;
+            }
+
+            .btn {
+                background-color: #4CAF50;
+                color: white;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                width: 100%;
+            }
+
+            .btn:hover {
+                background-color: #0000ff;
+            }
+        </style>
+
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text">제목</span>
+            </label>
+            <input type="text" name="title" placeholder="제목을 입력해주세요." class="input input-bordered" style="width: 1000px;">
+        </div>
+
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text">내용</span>
+            </label>
+            <textarea name="body" placeholder="내용을 입력해주세요." maxlength="500" class="input input-bordered" style="width: 1000px; height: 200px;"></textarea>
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit" style="width: 1000px;">
+            <i class="fa-solid fa-pen"></i> 글 작성
+        </button>
+
+
+    </form>
+
+
+    <script>
+        function submitWriteForm(form) {
+            const inputTitle = form.title;
+            const inputBody = form.body;
+
+            inputTitle.value = inputTitle.value.trim();
+            inputBody.value = inputBody.value.trim();
+
+            const title = inputTitle.value;
+            const body = inputBody.value;
+
+            if (title.length == 0) {
+                toastWarning('제목을 입력해주세요.');
+                inputTitle.focus();
+
+                return;
+            }
+
+            if (body.length == 0) {
+                toastWarning('내용을 입력해주세요.');
+                inputBody.focus();
+
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+</div>
+
+</html>

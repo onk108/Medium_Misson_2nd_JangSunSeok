@@ -2,7 +2,9 @@ package com.ll.medium.domain.post.post.service;
 
 import com.ll.medium.domain.member.member.entity.Member;
 import com.ll.medium.domain.post.post.entity.Post;
+import com.ll.medium.domain.post.post.entity.payPost;
 import com.ll.medium.domain.post.post.repository.PostRepository;
+import com.ll.medium.domain.post.post.repository.payPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
+    private final payPostRepository payPostRepository;
 
     @Transactional
     public void write(Member author, String title, String body, boolean isPublished) {
@@ -29,6 +32,19 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public void payWrite(Member author, String title, String body, boolean isPublished) {
+        payPost paypost = payPost.builder()
+                .author(author)
+                .title(title)
+                .body(body)
+                .isPublished(isPublished)
+                .build();
+
+        payPostRepository.save(paypost);
+    }
+
+
+
     public Object findTop30ByIsPublishedOrderByIdDesc(boolean isPublished) {
         return postRepository.findTop30ByIsPublishedOrderByIdDesc(isPublished);
     }
@@ -40,4 +56,9 @@ public class PostService {
     public Page<Post> search(String kw, Pageable pageable) {
         return postRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(kw, kw, pageable);
     }
+
+    public Page<payPost> paySearch(String kw, Pageable pageable) {
+        return payPostRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(kw, kw, pageable);
+    }
+
 }

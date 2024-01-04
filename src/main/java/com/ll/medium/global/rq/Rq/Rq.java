@@ -1,11 +1,14 @@
 package com.ll.medium.global.rq.Rq;
 
+import com.ll.medium.domain.member.member.entity.Member;
+import com.ll.medium.domain.member.member.service.MemberService;
 import com.ll.medium.global.rsData.RsData.RsData;
 import com.ll.medium.standard.util.Ut.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +17,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Optional;
 
 @Component
@@ -22,6 +26,9 @@ import java.util.Optional;
 public class Rq {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
+    private final MemberService memberService;
+    private Member member;
+    private User user;
 
     public String redirect(String url, String msg) {
         msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
@@ -77,6 +84,16 @@ public class Rq {
                 .anyMatch(it -> it.getAuthority().equals("ROLE_ADMIN"));
     }
 
+    public boolean isPaid() {
+        Collection<GrantedAuthority> authorities = getUser().getAuthorities();
+        for (GrantedAuthority authority : authorities) {
+            if (authority.getAuthority().equals("ROLE_PAID")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setAttribute(String key, Object value) {
         request.setAttribute(key, value);
     }
@@ -92,4 +109,25 @@ public class Rq {
 
         return queryString;
     }
+
+    public boolean isLogined() {
+        return user != null;
+    }
+
+    private String getMemberUsername() {
+        return user.getUsername();
+    }
+
+    public Member getMember() {
+        if(!isLogined()) {
+            return null;
+        }
+
+        if(member == null)
+            member = memberService.findByUsername(getMemberUsername()).get();
+
+        return member;
+    }
+
+
 }

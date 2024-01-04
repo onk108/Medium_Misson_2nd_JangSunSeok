@@ -6,8 +6,10 @@
 
 <body>
 
-<div layout:fragment="content">
-    <h1>로그인</h1>
+<div layout:fragment="content" class="mt-4">
+    <h1 class="mb-4" style="font-size: 24px;">로그인</h1>
+
+    <div class="mt-4">
 
     <script>
         function submitLoginForm(form) {
@@ -32,17 +34,40 @@
     </script>
 
     <form th:action method="POST" onsubmit="submitLoginForm(this); return false;">
-        <div>
-            <label>사용자 ID</label>
-            <input type="text" name="username">
-        </div>
+        <style> .input-container {
+            margin-bottom: 1rem;
+        }
 
-        <div>
-            <label>비밀번호</label>
-            <input type="password" name="password">
-        </div>
+        .input-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
 
-        <button type="submit">로그인</button>
+        .input-container input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0000ff;
+        } </style>
+        <div class="input-container"><label for="username">사용자 ID</label> <input type="text" id="username"
+                                                                                 name="username"></div>
+        <div class="input-container"><label for="password">비밀번호</label> <input type="password" id="password"
+                                                                               name="password"></div>
+        <button class="btn btn-primary" type="submit">로그인</button>
     </form>
 </div>
 
